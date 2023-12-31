@@ -11,16 +11,16 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
 // Lexical Types
 import { InitialConfigType } from "@lexical/react/LexicalComposer";
+
+// Custom Plugin and Components
 import EditorPlaceHolder from "./EditorComponent/EditorPlaceHolder/EditorPlaceHolder";
-import EditorToolbar from "./EditorComponent/EditorToolbar/EditorToolbar";
 import CustomFocusPlugin from "./EditorPlugins/CustomFocusPlugin/CustomFocusPlugin";
 import OnChangePlugin from "./EditorPlugins/OnChangePlugin/OnChangePlugin";
-import editorTheme from "./EditorStyles/editorTheme";
-import { editorStyles } from "./EditorStyles/editor.styles";
+import editorTheme from "./EditorStyles/editor.theme";
+import EditorActions from "./EditorComponent/EditorActions/EditorActions";
 
-// Catch any errors that occur during Lexical updates and log them
-// or throw them as needed. If you don't throw them, Lexical will
-// try to recover gracefully without losing user data.
+// Editor Styles
+import { editorStyles } from "./EditorStyles/editor.styles";
 
 interface IOnChangeProps {
   plainText: string;
@@ -46,7 +46,7 @@ export default function Editor({ placeHolder, onChange }: IEditorProps) {
       <div {...stylex.props(editorStyles.container)}>
         <div className="richtext-editor">
           <LexicalComposer initialConfig={initialConfig}>
-            <EditorToolbar />
+            <EditorActions />
             <RichTextPlugin
               contentEditable={<ContentEditable autoFocus={true} />}
               placeholder={<EditorPlaceHolder>{placeHolder}</EditorPlaceHolder>}
