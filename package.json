@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.4",
     "@lexical/code": "^0.12.5",
     "@lexical/link": "^0.12.5",
     "@lexical/list": "^0.12.5",

@@ -1,4 +1,4 @@
-import { $isLinkNode } from "@lexical/link";
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import {
   $isListNode,
   INSERT_ORDERED_LIST_COMMAND,
@@ -6,6 +6,7 @@ import {
   ListNode,
   REMOVE_LIST_COMMAND,
 } from "@lexical/list";
+import { ListNodeTagType } from "@lexical/list/LexicalListNode";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   $createHeadingNode,
@@ -18,7 +19,6 @@ import {
   $createParagraphNode,
   $getSelection,
   $isRangeSelection,
-  DEPRECATED_$isGridSelection,
   FORMAT_ELEMENT_COMMAND,
   FORMAT_TEXT_COMMAND,
   SELECTION_CHANGE_COMMAND,
@@ -30,14 +30,13 @@ import {
   checkIsElementFormatType,
   checkIsFormatType,
   checkIsHeaderType,
+  checkListType,
+  formatTypeList,
   getElementBySelection,
   getSelectedNodeBySelection,
   headingTags,
-  formatTypeList,
-  checkListType,
   listTypeList,
 } from "../../../EditorUtils/editorUtils";
-import { ListNodeTagType } from "@lexical/list/LexicalListNode";
 
 const LowPriority = 1;
 
@@ -50,19 +49,10 @@ export type TCustomEditorActionType =
 
 const useEditorAction = () => {
   const [editor] = useLexicalComposerContext();
-  // const [modal, showModal] = useModal();
   const [blockType, setBlockType] = useState("paragraph");
-  const [
-    ,
-    // selectedElementKey
-    setSelectedElementKey,
-  ] = useState<HTMLElement | null>(null);
-  // const [isRTL, setIsRTL] = useState(false);
-  const [
-    ,
-    // isLink
-    setIsLink,
-  ] = useState(false);
+  const [selectedElementKey, setSelectedElementKey] =
+    useState<HTMLElement | null>(null);
+  const [isLink, setIsLink] = useState(false);
   const [selectedEventTypes, setSelectedEventTypes] = useState<
     TCustomEditorActionType[]
   >([]);
@@ -123,16 +113,14 @@ const useEditorAction = () => {
         pushInEventTypesState(selection.hasFormat(data), data);
       });
 
-      // setIsRTL($isParentElementRTL(selection));
-
-      // Update links
       const node = getSelectedNodeBySelection(selection);
       const parent = node.getParent();
+      const isIncludeLink = allSelectedEvents.includes("link");
       if ($isLinkNode(parent) || $isLinkNode(node)) {
-        if (!allSelectedEvents.includes("link")) allSelectedEvents.push("link");
+        if (!isIncludeLink) allSelectedEvents.push("link");
         setIsLink(true);
       } else {
-        if (allSelectedEvents.includes("link")) {
+        if (isIncludeLink) {
           allSelectedEvents = allSelectedEvents.filter((ev) => ev !== "link");
         }
         setIsLink(false);
@@ -140,84 +128,80 @@ const useEditorAction = () => {
 
       setSelectedEventTypes(allSelectedEvents);
     }
-
-    // console.log("allSelectedEvents", allSelectedEvents);
   }, [editor, selectedEventTypes]);
 
-  const formatHeading = useCallback(
+  const handleHeadingFormat = useCallback(
     (type: HeadingTagType) => {
       editor.update(() => {
         const selection = $getSelection();
-        if (
-          $isRangeSelection(selection) ||
-          DEPRECATED_$isGridSelection(selection)
-        ) {
-          if (blockType !== type) {
-            $setBlocksType(selection, () => $createHeadingNode(type));
-          } else {
-            $setBlocksType(selection, () => $createParagraphNode());
-          }
+        if ($isRangeSelection(selection)) {
+          $setBlocksType(selection, () =>
+            blockType !== type
+              ? $createHeadingNode(type)
+              : $createParagraphNode()
+          );
         }
       });
     },
     [blockType, editor]
   );
 
-  const formatList = useCallback(
+  const handleListFormat = useCallback(
     (type: ListNodeTagType) => {
       const undefy: void = undefined;
-
-      if (blockType !== type) {
-        editor.dispatchCommand(
-          type === "ol"
-            ? INSERT_ORDERED_LIST_COMMAND
-            : INSERT_UNORDERED_LIST_COMMAND,
-          undefy
-        );
-      } else {
-        editor.dispatchCommand(REMOVE_LIST_COMMAND, undefy);
-      }
+      const dispatchType =
+        blockType === type
+          ? REMOVE_LIST_COMMAND // If Undo Liststyle.
+          : type === "ol"
+          ? INSERT_ORDERED_LIST_COMMAND
+          : INSERT_UNORDERED_LIST_COMMAND;
+      editor.dispatchCommand(dispatchType, undefy);
     },
     [blockType, editor]
   );
 
+  const handleFormatLink = useCallback(() => {
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, !isLink ? "https://" : null);
+  }, [editor, isLink]);
+
   const onClickAction = useCallback(
     (type: TCustomEditorActionType) => {
       if (checkIsFormatType(type)) {
-        editor.dispatchCommand(FORMAT_TEXT_COMMAND, type as TextFormatType);
-        return;
+        return editor.dispatchCommand(
+          FORMAT_TEXT_COMMAND,
+          type as TextFormatType
+        );
       }
 
       if (checkIsElementFormatType(type)) {
-        editor.dispatchCommand(
+        return editor.dispatchCommand(
           FORMAT_ELEMENT_COMMAND,
           type as ElementFormatType
         );
-        return;
       }
 
       if (checkIsHeaderType(type)) {
-        formatHeading(type as HeadingTagType);
-        return;
+        return handleHeadingFormat(type as HeadingTagType);
       }
 
       if (checkListType(type)) {
-        formatList(type as ListNodeTagType);
-        return;
+        return handleListFormat(type as ListNodeTagType);
+      }
+
+      if (type === "link") {
+        return handleFormatLink();
       }
     },
-    [editor, formatHeading, formatList]
+    [editor, handleHeadingFormat, handleListFormat, handleFormatLink]
   );
 
   useEffect(() => {
     return mergeRegister(
       editor.registerUpdateListener(({ editorState }) => {
         editorState.read(() => {
-          // console.log("registerUpdateListener");
           updateToolbar();
         });
       }),
-
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
         () => {
@@ -237,6 +221,8 @@ const useEditorAction = () => {
   );
 
   return {
+    isLink,
+    selectedElementKey,
     selectedEventTypes,
     onClickAction,
     checkActiveButton,

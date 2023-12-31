@@ -9,8 +9,10 @@ import {
   FiAlignLeft,
   FiAlignRight,
   FiAlignCenter,
+  FiLink,
 } from "react-icons/fi";
 import { FaListOl, FaHighlighter } from "react-icons/fa";
+
 const EditorToolbar = ({
   checkActiveButton,
   onClickAction,
@@ -83,7 +85,6 @@ const EditorToolbar = ({
       >
         <FiList />
       </span>
-
       <span
         {...stylex.props(
           style.actionButton,
@@ -92,6 +93,15 @@ const EditorToolbar = ({
         onClick={() => onClickAction("highlight")}
       >
         <FaHighlighter />
+      </span>
+      <span
+        {...stylex.props(
+          style.actionButton,
+          checkActiveButton("link") && style.activeButton
+        )}
+        onClick={() => onClickAction("link")}
+      >
+        <FiLink />
       </span>
       <span
         {...stylex.props(
@@ -105,20 +115,20 @@ const EditorToolbar = ({
       <span
         {...stylex.props(
           style.actionButton,
-          checkActiveButton("right") && style.activeButton
-        )}
-        onClick={() => onClickAction("right")}
-      >
-        <FiAlignRight />
-      </span>
-      <span
-        {...stylex.props(
-          style.actionButton,
           checkActiveButton("center") && style.activeButton
         )}
         onClick={() => onClickAction("center")}
       >
         <FiAlignCenter />
+      </span>
+      <span
+        {...stylex.props(
+          style.actionButton,
+          checkActiveButton("right") && style.activeButton
+        )}
+        onClick={() => onClickAction("right")}
+      >
+        <FiAlignRight />
       </span>
     </div>
   );
