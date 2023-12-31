@@ -1,5 +1,11 @@
 import { $isLinkNode } from "@lexical/link";
-import { $isListNode, ListNode } from "@lexical/list";
+import {
+  $isListNode,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+  ListNode,
+  REMOVE_LIST_COMMAND,
+} from "@lexical/list";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   $createHeadingNode,
@@ -28,7 +34,10 @@ import {
   getSelectedNodeBySelection,
   headingTags,
   formatTypeList,
+  checkListType,
+  listTypeList,
 } from "../../../EditorUtils/editorUtils";
+import { ListNodeTagType } from "@lexical/list/LexicalListNode";
 
 const LowPriority = 1;
 
@@ -36,6 +45,7 @@ export type TCustomEditorActionType =
   | TextFormatType
   | ElementFormatType
   | HeadingTagType
+  | ListNodeTagType
   | "link";
 
 const useEditorAction = () => {
@@ -74,14 +84,15 @@ const useEditorAction = () => {
       }
     };
 
-    const pushInEventHeaderTypesState = (
+    const pushInGenericTypesState = (
       selectionFormat: boolean,
       event: TCustomEditorActionType
     ) => {
-      const removeHeaders = allSelectedEvents.filter(
-        (ev) => !headingTags.includes(ev as HeadingTagType)
+      const data = [...listTypeList, ...headingTags];
+      const removeEvents = allSelectedEvents.filter(
+        (ev) => !data.includes(ev as HeadingTagType | ListNodeTagType)
       );
-      allSelectedEvents = removeHeaders;
+      allSelectedEvents = removeEvents;
       if (selectionFormat) {
         allSelectedEvents.push(event);
       }
@@ -94,15 +105,17 @@ const useEditorAction = () => {
 
       if (elementDOM !== null) {
         setSelectedElementKey(elementKey);
-        if ($isListNode(element)) {
+        const isListing = $isListNode(element);
+        if (isListing) {
           const parentList = $getNearestNodeOfType(anchorNode, ListNode);
           const type = parentList ? parentList.getTag() : element.getTag();
+          pushInGenericTypesState(isListing, type);
           setBlockType(type);
         } else {
           const isHeading = $isHeadingNode(element);
           const type = isHeading ? element.getTag() : element.getType();
+          pushInGenericTypesState(isHeading, type);
           setBlockType(type);
-          pushInEventHeaderTypesState(isHeading, type);
         }
       }
 
@@ -131,7 +144,7 @@ const useEditorAction = () => {
     // console.log("allSelectedEvents", allSelectedEvents);
   }, [editor, selectedEventTypes]);
 
-  const formatLargeHeading = useCallback(
+  const formatHeading = useCallback(
     (type: HeadingTagType) => {
       editor.update(() => {
         const selection = $getSelection();
@@ -146,6 +159,24 @@ const useEditorAction = () => {
           }
         }
       });
+    },
+    [blockType, editor]
+  );
+
+  const formatList = useCallback(
+    (type: ListNodeTagType) => {
+      const undefy: void = undefined;
+
+      if (blockType !== type) {
+        editor.dispatchCommand(
+          type === "ol"
+            ? INSERT_ORDERED_LIST_COMMAND
+            : INSERT_UNORDERED_LIST_COMMAND,
+          undefy
+        );
+      } else {
+        editor.dispatchCommand(REMOVE_LIST_COMMAND, undefy);
+      }
     },
     [blockType, editor]
   );
@@ -166,10 +197,16 @@ const useEditorAction = () => {
       }
 
       if (checkIsHeaderType(type)) {
-        formatLargeHeading(type as HeadingTagType);
+        formatHeading(type as HeadingTagType);
+        return;
+      }
+
+      if (checkListType(type)) {
+        formatList(type as ListNodeTagType);
+        return;
       }
     },
-    [editor, formatLargeHeading]
+    [editor, formatHeading, formatList]
   );
 
   useEffect(() => {

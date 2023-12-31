@@ -16,30 +16,53 @@ export const editorStyles = stylex.create({
 export const editorToolbarStyles = stylex.create({
   container: {
     position: "relative",
-    borderWidth: 1,
-    borderColor: "#dfdfdf",
-    borderStyle: "solid",
-    paddingHorizontal: 20,
-    paddingVertical: 20,
     marginBottom: 20,
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
 
   actionButton: {
-    display: "inline-block",
-    marginRight: 10,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 14,
+    marginRight: 8,
+    marginVertical: 12,
     cursor: "pointer",
+    borderWidth: 1,
+    color: {
+      ":hover": "white",
+    },
+    borderColor: {
+      default: "#dfdfdf",
+      ":hover": "#eee",
+    },
+    borderStyle: "solid",
+    borderRadius: 10,
+    padding: 5,
+    background: {
+      default: null,
+      ":hover": "linear-gradient(315deg, #b92b27 , #1565c0)",
+    },
   },
 
   activeButton: {
-    fontWeight: "bold",
+    color: "white",
+    borderColor: {
+      default: "#dfdfdf",
+      ":hover": "#eee",
+    },
+    background: {
+      default: "linear-gradient(315deg, #b92b27 , #1565c0)",
+    },
   },
 });
 
 export const placeHolderStyle = stylex.create({
   container: {
-    position: "absolute",
-    top: 100,
-    left: 24,
+    position: "relative",
+    top: -18,
     color: "#777",
   },
 });

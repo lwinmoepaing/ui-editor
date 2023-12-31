@@ -47,6 +47,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-icons:
+    specifier: ^4.12.0
+    version: 4.12.0(react@18.2.0)
   styled-jsx:
     specifier: ^5.1.2
     version: 5.1.2(@babel/core@7.23.7)(react@18.2.0)
@@ -2002,6 +2005,14 @@ packages:
       react: '>=16.13.1'
     dependencies:
       '@babel/runtime': 7.23.7
+      react: 18.2.0
+    dev: false
+
+  /react-icons@4.12.0(react@18.2.0):
+    resolution: {integrity: sha512-IBaDuHiShdZqmfc/TwHu6+d6k2ltNCf3AszxNmjJc1KUfXdEeRJOKyNvLmAHaarhzGmTSVygNdyu8/opXv2gaw==}
+    peerDependencies:
+      react: '*'
+    dependencies:
       react: 18.2.0
     dev: false
 

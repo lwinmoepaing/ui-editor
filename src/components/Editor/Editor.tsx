@@ -5,6 +5,8 @@ import * as stylex from "@stylexjs/stylex";
 // Lexical Editor Plugin
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 
 // Lexical Error Boundaries
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
@@ -41,8 +43,10 @@ export default function Editor({ placeHolder, onChange }: IEditorProps) {
               placeholder={<EditorPlaceHolder>{placeHolder}</EditorPlaceHolder>}
               ErrorBoundary={LexicalErrorBoundary}
             />
-            <HistoryPlugin />
+            <ListPlugin />
+            <LinkPlugin />
             <CustomFocusPlugin />
+            <HistoryPlugin />
             <OnChangePlugin onChange={onChange} />
           </LexicalComposer>
         </div>

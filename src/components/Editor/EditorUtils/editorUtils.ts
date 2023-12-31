@@ -4,6 +4,7 @@ import {
   ElementFormatType,
   ElementNode,
 } from "lexical/nodes/LexicalElementNode";
+import { ListNodeTagType } from "@lexical/list/LexicalListNode";
 import { TextFormatType } from "lexical/nodes/LexicalTextNode";
 import { TCustomEditorActionType } from "../EditorComponent/EditorActions/hook/useEditorAction";
 import { HeadingTagType } from "@lexical/rich-text";
@@ -36,6 +37,12 @@ export const eleFormatTypeList: ElementFormatType[] = [
   "end",
   "justify",
 ];
+
+export const listTypeList: ListNodeTagType[] = ["ul", "ol"];
+
+export const checkListType = (type: TCustomEditorActionType): boolean => {
+  return listTypeList.includes(type as ListNodeTagType);
+};
 
 export const checkIsFormatType = (type: TCustomEditorActionType): boolean => {
   return formatTypeList.includes(type as TextFormatType);

@@ -1,7 +1,16 @@
 import { stylex } from "@stylexjs/stylex";
 import { editorToolbarStyles as style } from "../../../../EditorStyles/editor.styles";
 import { TCustomEditorActionType } from "../../hook/useEditorAction";
-
+import {
+  FiBold,
+  FiItalic,
+  FiUnderline,
+  FiList,
+  FiAlignLeft,
+  FiAlignRight,
+  FiAlignCenter,
+} from "react-icons/fi";
+import { FaListOl, FaHighlighter } from "react-icons/fa";
 const EditorToolbar = ({
   checkActiveButton,
   onClickAction,
@@ -36,7 +45,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("bold")}
       >
-        Bold
+        <FiBold />
       </span>
       <span
         {...stylex.props(
@@ -45,7 +54,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("italic")}
       >
-        Italic
+        <FiItalic />
       </span>
       <span
         {...stylex.props(
@@ -54,7 +63,25 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("underline")}
       >
-        Underline
+        <FiUnderline />
+      </span>
+      <span
+        {...stylex.props(
+          style.actionButton,
+          checkActiveButton("ol") && style.activeButton
+        )}
+        onClick={() => onClickAction("ol")}
+      >
+        <FaListOl />
+      </span>
+      <span
+        {...stylex.props(
+          style.actionButton,
+          checkActiveButton("ul") && style.activeButton
+        )}
+        onClick={() => onClickAction("ul")}
+      >
+        <FiList />
       </span>
 
       <span
@@ -64,7 +91,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("highlight")}
       >
-        Highlight
+        <FaHighlighter />
       </span>
       <span
         {...stylex.props(
@@ -73,7 +100,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("left")}
       >
-        Left
+        <FiAlignLeft />
       </span>
       <span
         {...stylex.props(
@@ -82,7 +109,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("right")}
       >
-        Right
+        <FiAlignRight />
       </span>
       <span
         {...stylex.props(
@@ -91,7 +118,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("center")}
       >
-        Center
+        <FiAlignCenter />
       </span>
     </div>
   );
