@@ -1,4 +1,3 @@
-import EditorToolbar from "./components/EditorToolbar/EditorToolbar";
 import EditorTooltip from "./components/EditorTooltip/EditorTooltip";
 import useEditorAction from "./hook/useEditorAction";
 
@@ -7,11 +6,11 @@ const EditorActions = () => {
 
   return (
     <>
-      <EditorToolbar
+      <EditorTooltip
+        isLink={isLink}
         onClickAction={onClickAction}
         checkActiveButton={checkActiveButton}
       />
-      <EditorTooltip isLink={isLink} />
     </>
   );
 };

@@ -22,6 +22,7 @@
     "@stylexjs/babel-plugin": "^0.4.1",
     "@stylexjs/stylex": "^0.4.1",
     "@types/node": "^20.10.6",
+    "framer-motion": "^10.16.16",
     "lexical": "^0.12.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

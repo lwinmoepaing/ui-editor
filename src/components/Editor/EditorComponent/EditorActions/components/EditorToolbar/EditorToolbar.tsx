@@ -12,6 +12,21 @@ import {
   FiLink,
 } from "react-icons/fi";
 import { FaListOl, FaHighlighter } from "react-icons/fa";
+import { motion, Variants } from "framer-motion";
+
+const opacityAnimation: Variants = {
+  initial: {
+    opacity: 0,
+    scale: 0,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delay: 0.1,
+    },
+  },
+} as const;
 
 const EditorToolbar = ({
   checkActiveButton,
@@ -21,8 +36,13 @@ const EditorToolbar = ({
   onClickAction: (str: TCustomEditorActionType) => void;
 }) => {
   return (
-    <div {...stylex.props(style.container)}>
-      <span
+    <motion.div
+      {...stylex.props(style.container)}
+    >
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("h1") && style.activeButton
@@ -30,8 +50,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("h1")}
       >
         H1
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("h2") && style.activeButton
@@ -39,8 +62,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("h2")}
       >
         H2
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("bold") && style.activeButton
@@ -48,8 +74,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("bold")}
       >
         <FiBold />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("italic") && style.activeButton
@@ -57,8 +86,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("italic")}
       >
         <FiItalic />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("underline") && style.activeButton
@@ -66,8 +98,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("underline")}
       >
         <FiUnderline />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("ol") && style.activeButton
@@ -75,8 +110,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("ol")}
       >
         <FaListOl />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("ul") && style.activeButton
@@ -84,8 +122,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("ul")}
       >
         <FiList />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("highlight") && style.activeButton
@@ -93,8 +134,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("highlight")}
       >
         <FaHighlighter />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("link") && style.activeButton
@@ -102,8 +146,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("link")}
       >
         <FiLink />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("left") && style.activeButton
@@ -111,8 +158,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("left")}
       >
         <FiAlignLeft />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("center") && style.activeButton
@@ -120,8 +170,11 @@ const EditorToolbar = ({
         onClick={() => onClickAction("center")}
       >
         <FiAlignCenter />
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
         {...stylex.props(
           style.actionButton,
           checkActiveButton("right") && style.activeButton
@@ -129,8 +182,8 @@ const EditorToolbar = ({
         onClick={() => onClickAction("right")}
       >
         <FiAlignRight />
-      </span>
-    </div>
+      </motion.span>
+    </motion.div>
   );
 };
 export default EditorToolbar;

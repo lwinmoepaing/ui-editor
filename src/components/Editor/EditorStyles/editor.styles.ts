@@ -6,6 +6,7 @@ export const editorStyles = stylex.create({
     borderRadius: 10,
     paddingHorizontal: 24,
     paddingVertical: 20,
+    marginTop: 40,
   },
 
   editor: {
@@ -14,12 +15,16 @@ export const editorStyles = stylex.create({
 });
 
 export const editorToolbarStyles = stylex.create({
+  toolbarWrapper: {
+    marginBottom: 20,
+  },
+
   container: {
     position: "relative",
-    marginBottom: 20,
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
+    gap: 10,
   },
 
   actionButton: {
@@ -27,8 +32,6 @@ export const editorToolbarStyles = stylex.create({
     justifyContent: "center",
     alignItems: "center",
     fontSize: 14,
-    marginRight: 8,
-    marginVertical: 12,
     cursor: "pointer",
     borderWidth: 1,
     color: {
@@ -59,10 +62,25 @@ export const editorToolbarStyles = stylex.create({
   },
 });
 
+export const editorTooltipStyles = stylex.create({
+  topTooltip: {
+    padding: 10,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderRadius: 10,
+    borderColor: {
+      default: "#dfdfdf",
+      ":hover": "#eee",
+    },
+  },
+});
+
 export const placeHolderStyle = stylex.create({
   container: {
     position: "relative",
-    top: -18,
+    top: -23,
     color: "#777",
+    fontSize: 20,
   },
 });
