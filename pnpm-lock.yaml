@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@lexical/code':
+    specifier: ^0.12.5
+    version: 0.12.5(lexical@0.12.5)
   '@lexical/link':
     specifier: ^0.12.5
     version: 0.12.5(lexical@0.12.5)
@@ -18,6 +21,9 @@ dependencies:
     specifier: ^0.12.5
     version: 0.12.5(@lexical/clipboard@0.12.5)(@lexical/selection@0.12.5)(@lexical/utils@0.12.5)(lexical@0.12.5)
   '@lexical/selection':
+    specifier: ^0.12.5
+    version: 0.12.5(lexical@0.12.5)
+  '@lexical/table':
     specifier: ^0.12.5
     version: 0.12.5(lexical@0.12.5)
   '@lexical/utils':

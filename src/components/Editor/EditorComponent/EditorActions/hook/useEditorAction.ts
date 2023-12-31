@@ -1,10 +1,18 @@
+import { $isLinkNode } from "@lexical/link";
 import { $isListNode, ListNode } from "@lexical/list";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $isHeadingNode } from "@lexical/rich-text";
+import {
+  $createHeadingNode,
+  $isHeadingNode,
+  HeadingTagType,
+} from "@lexical/rich-text";
+import { $setBlocksType } from "@lexical/selection";
 import { $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
 import {
+  $createParagraphNode,
   $getSelection,
   $isRangeSelection,
+  DEPRECATED_$isGridSelection,
   FORMAT_ELEMENT_COMMAND,
   FORMAT_TEXT_COMMAND,
   SELECTION_CHANGE_COMMAND,
@@ -15,64 +23,67 @@ import { useCallback, useEffect, useState } from "react";
 import {
   checkIsElementFormatType,
   checkIsFormatType,
+  checkIsHeaderType,
   getElementBySelection,
+  getSelectedNodeBySelection,
+  headingTags,
+  formatTypeList,
 } from "../../../EditorUtils/editorUtils";
 
 const LowPriority = 1;
 
+export type TCustomEditorActionType =
+  | TextFormatType
+  | ElementFormatType
+  | HeadingTagType
+  | "link";
+
 const useEditorAction = () => {
   const [editor] = useLexicalComposerContext();
   // const [modal, showModal] = useModal();
-  const [
-    ,
-    // blockType
-    setBlockType,
-  ] = useState("paragraph");
+  const [blockType, setBlockType] = useState("paragraph");
   const [
     ,
     // selectedElementKey
     setSelectedElementKey,
   ] = useState<HTMLElement | null>(null);
   // const [isRTL, setIsRTL] = useState(false);
-  // const [isLink, setIsLink] = useState(false);
+  const [
+    ,
+    // isLink
+    setIsLink,
+  ] = useState(false);
   const [selectedEventTypes, setSelectedEventTypes] = useState<
-    (TextFormatType | ElementFormatType)[]
+    TCustomEditorActionType[]
   >([]);
-
-  const onClickAction = useCallback(
-    (type: TextFormatType | ElementFormatType) => {
-      if (checkIsFormatType(type)) {
-        editor.dispatchCommand(FORMAT_TEXT_COMMAND, type as TextFormatType);
-        return;
-      }
-
-      if (checkIsElementFormatType(type)) {
-        editor.dispatchCommand(
-          FORMAT_ELEMENT_COMMAND,
-          type as ElementFormatType
-        );
-        return;
-      }
-    },
-    [editor]
-  );
 
   const updateToolbar = useCallback(() => {
     const selection = $getSelection();
-
-    //
     let allSelectedEvents = [...selectedEventTypes];
 
     // inner function
     const pushInEventTypesState = (
       selectionFormat: boolean,
-      event: TextFormatType | ElementFormatType
+      event: TCustomEditorActionType
     ) => {
       if (selectionFormat) {
         if (selectedEventTypes.includes(event)) return;
         else allSelectedEvents.push(event);
       } else {
         allSelectedEvents = allSelectedEvents.filter((ev) => ev !== event);
+      }
+    };
+
+    const pushInEventHeaderTypesState = (
+      selectionFormat: boolean,
+      event: TCustomEditorActionType
+    ) => {
+      const removeHeaders = allSelectedEvents.filter(
+        (ev) => !headingTags.includes(ev as HeadingTagType)
+      );
+      allSelectedEvents = removeHeaders;
+      if (selectionFormat) {
+        allSelectedEvents.push(event);
       }
     };
 
@@ -88,46 +99,78 @@ const useEditorAction = () => {
           const type = parentList ? parentList.getTag() : element.getTag();
           setBlockType(type);
         } else {
-          const type = $isHeadingNode(element)
-            ? element.getTag()
-            : element.getType();
+          const isHeading = $isHeadingNode(element);
+          const type = isHeading ? element.getTag() : element.getType();
           setBlockType(type);
+          pushInEventHeaderTypesState(isHeading, type);
         }
       }
 
-      pushInEventTypesState(selection.hasFormat("highlight"), "highlight");
-      pushInEventTypesState(selection.hasFormat("bold"), "bold");
-      pushInEventTypesState(selection.hasFormat("italic"), "italic");
-      pushInEventTypesState(selection.hasFormat("underline"), "underline");
-      pushInEventTypesState(
-        selection.hasFormat("strikethrough"),
-        "strikethrough"
-      );
-      pushInEventTypesState(selection.hasFormat("code"), "code");
+      formatTypeList.forEach((data) => {
+        pushInEventTypesState(selection.hasFormat(data), data);
+      });
 
       // setIsRTL($isParentElementRTL(selection));
 
       // Update links
-      // const node = getSelectedNode(selection);
-      // const parent = node.getParent();
-      // if ($isLinkNode(parent) || $isLinkNode(node)) {
-      //   if (!allSelectedEvents.includes(eventTypes.formatInsertLink))
-      //     allSelectedEvents.push(eventTypes.formatInsertLink);
-      //   setIsLink(true);
-      // } else {
-      //   if (allSelectedEvents.includes(eventTypes.formatInsertLink)) {
-      //     allSelectedEvents = allSelectedEvents.filter(
-      //       (ev) => ev !== eventTypes.formatCode
-      //     );
-      //   }
-      //   setIsLink(false);
-      // }
+      const node = getSelectedNodeBySelection(selection);
+      const parent = node.getParent();
+      if ($isLinkNode(parent) || $isLinkNode(node)) {
+        if (!allSelectedEvents.includes("link")) allSelectedEvents.push("link");
+        setIsLink(true);
+      } else {
+        if (allSelectedEvents.includes("link")) {
+          allSelectedEvents = allSelectedEvents.filter((ev) => ev !== "link");
+        }
+        setIsLink(false);
+      }
 
       setSelectedEventTypes(allSelectedEvents);
     }
 
     // console.log("allSelectedEvents", allSelectedEvents);
   }, [editor, selectedEventTypes]);
+
+  const formatLargeHeading = useCallback(
+    (type: HeadingTagType) => {
+      editor.update(() => {
+        const selection = $getSelection();
+        if (
+          $isRangeSelection(selection) ||
+          DEPRECATED_$isGridSelection(selection)
+        ) {
+          if (blockType !== type) {
+            $setBlocksType(selection, () => $createHeadingNode(type));
+          } else {
+            $setBlocksType(selection, () => $createParagraphNode());
+          }
+        }
+      });
+    },
+    [blockType, editor]
+  );
+
+  const onClickAction = useCallback(
+    (type: TCustomEditorActionType) => {
+      if (checkIsFormatType(type)) {
+        editor.dispatchCommand(FORMAT_TEXT_COMMAND, type as TextFormatType);
+        return;
+      }
+
+      if (checkIsElementFormatType(type)) {
+        editor.dispatchCommand(
+          FORMAT_ELEMENT_COMMAND,
+          type as ElementFormatType
+        );
+        return;
+      }
+
+      if (checkIsHeaderType(type)) {
+        formatLargeHeading(type as HeadingTagType);
+      }
+    },
+    [editor, formatLargeHeading]
+  );
 
   useEffect(() => {
     return mergeRegister(
@@ -149,24 +192,8 @@ const useEditorAction = () => {
     );
   }, [editor, updateToolbar]);
 
-  // function getSelectedNode(selection) {
-  //   const anchor = selection.anchor;
-  //   const focus = selection.focus;
-  //   const anchorNode = selection.anchor.getNode();
-  //   const focusNode = selection.focus.getNode();
-  //   if (anchorNode === focusNode) {
-  //     return anchorNode;
-  //   }
-  //   const isBackward = selection.isBackward();
-  //   if (isBackward) {
-  //     return $isAtNodeEnd(focus) ? anchorNode : focusNode;
-  //   } else {
-  //     return $isAtNodeEnd(anchor) ? focusNode : anchorNode;
-  //   }
-  // }
-
   const checkActiveButton = useCallback(
-    (str: TextFormatType | ElementFormatType) => {
+    (str: TCustomEditorActionType) => {
       return selectedEventTypes.includes(str);
     },
     [selectedEventTypes]

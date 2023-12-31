@@ -1,6 +1,6 @@
 import Editor from "./components/Editor/Editor";
 import "./global.css";
-import "./editor.css";
+import "./components/Editor/EditorStyles/editor.global.css";
 function App() {
   return (
     <>

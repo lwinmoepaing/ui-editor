@@ -9,18 +9,15 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 // Lexical Error Boundaries
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
-// Lexical Types
-import { InitialConfigType } from "@lexical/react/LexicalComposer";
-
 // Custom Plugin and Components
 import EditorPlaceHolder from "./EditorComponent/EditorPlaceHolder/EditorPlaceHolder";
 import CustomFocusPlugin from "./EditorPlugins/CustomFocusPlugin/CustomFocusPlugin";
 import OnChangePlugin from "./EditorPlugins/OnChangePlugin/OnChangePlugin";
-import editorTheme from "./EditorStyles/editor.theme";
 import EditorActions from "./EditorComponent/EditorActions/EditorActions";
 
 // Editor Styles
 import { editorStyles } from "./EditorStyles/editor.styles";
+import editorConfig from "./EditorConfig/editor.config";
 
 interface IOnChangeProps {
   plainText: string;
@@ -33,19 +30,11 @@ interface IEditorProps {
 }
 
 export default function Editor({ placeHolder, onChange }: IEditorProps) {
-  const initialConfig: InitialConfigType = {
-    theme: editorTheme,
-    namespace: "StrategistEditor",
-    onError: (error: Error) => {
-      console.error(error);
-    },
-  };
-
   return (
     <>
       <div {...stylex.props(editorStyles.container)}>
         <div className="richtext-editor">
-          <LexicalComposer initialConfig={initialConfig}>
+          <LexicalComposer initialConfig={editorConfig}>
             <EditorActions />
             <RichTextPlugin
               contentEditable={<ContentEditable autoFocus={true} />}

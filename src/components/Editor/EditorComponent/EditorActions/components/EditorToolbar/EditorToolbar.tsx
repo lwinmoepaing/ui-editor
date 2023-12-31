@@ -1,16 +1,34 @@
 import { stylex } from "@stylexjs/stylex";
 import { editorToolbarStyles as style } from "../../../../EditorStyles/editor.styles";
-import { ElementFormatType, TextFormatType } from "lexical";
+import { TCustomEditorActionType } from "../../hook/useEditorAction";
 
 const EditorToolbar = ({
   checkActiveButton,
   onClickAction,
 }: {
-  checkActiveButton: (str: TextFormatType | ElementFormatType) => boolean;
-  onClickAction: (str: TextFormatType | ElementFormatType) => void;
+  checkActiveButton: (str: TCustomEditorActionType) => boolean;
+  onClickAction: (str: TCustomEditorActionType) => void;
 }) => {
   return (
     <div {...stylex.props(style.container)}>
+      <span
+        {...stylex.props(
+          style.actionButton,
+          checkActiveButton("h1") && style.activeButton
+        )}
+        onClick={() => onClickAction("h1")}
+      >
+        H1
+      </span>
+      <span
+        {...stylex.props(
+          style.actionButton,
+          checkActiveButton("h2") && style.activeButton
+        )}
+        onClick={() => onClickAction("h2")}
+      >
+        H2
+      </span>
       <span
         {...stylex.props(
           style.actionButton,
