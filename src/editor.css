@@ -1,0 +1,19 @@
+.richtext-editor > div {
+  outline: none;
+}
+
+.editor-paragraph {
+  margin: 0;
+}
+
+.editor-text-bold {
+  font-weight: bold;
+}
+
+.editor-text-underline {
+  text-decoration: underline;
+}
+
+.editor-text-italic {
+  font-style: oblique
+}
