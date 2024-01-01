@@ -64,6 +64,10 @@ export const editorToolbarStyles = stylex.create({
 
 export const editorTooltipStyles = stylex.create({
   topTooltip: {
+    position: "absolute",
+    width: "max-content",
+    top: 0,
+    left: 0,
     padding: 10,
     backgroundColor: "white",
     borderWidth: 1,

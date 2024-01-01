@@ -1,15 +1,15 @@
-import { computePosition, flip, offset, shift } from "@floating-ui/react";
+import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { stylex } from "@stylexjs/stylex";
+import { motion } from "framer-motion";
 import { $getSelection } from "lexical";
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
-import { $isRangeSelected } from "../../../../EditorUtils/isRangeSelected";
-import { useEditorPointInteractions } from "../../hook/useEditorPointInteractions";
-import { editorTooltipStyles as styles } from "../../../../EditorStyles/editor.styles";
-import { stylex } from "@stylexjs/stylex";
-import EditorToolbar from "../EditorToolbar/EditorToolbar";
-import { TCustomEditorActionType } from "../../hook/useEditorAction";
 import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
+import { editorTooltipStyles as styles } from "../../../../EditorStyles/editor.styles";
+import { $isRangeSelected } from "../../../../EditorUtils/isRangeSelected";
+import { TCustomEditorActionType } from "../../hook/useEditorAction";
+import { useEditorPointInteractions } from "../../hook/useEditorPointInteractions";
+import EditorToolbar from "../EditorToolbar/EditorToolbar";
 
 interface IEditorTooltipProps {
   isLink: boolean;
@@ -29,6 +29,7 @@ const EditorTooltip = ({
   const [editor] = useLexicalComposerContext();
   const [isOpen, setIsOpen] = useState<boolean>(isLink);
   const [pos, setPos] = useState<FloatingMenuPosition>(undefined);
+  const [hasHydrate, setHasHydrate] = useState<boolean>(false);
 
   useEffect(() => {
     editor.update(() => {
@@ -49,13 +50,25 @@ const EditorTooltip = ({
       setPos(undefined);
       return;
     }
+
     const domRange = nativeSel.getRangeAt(0);
 
     computePosition(domRange, ref.current, {
       middleware: [flip(), shift(), offset(10)],
       placement: "top",
     })
-      .then(({ x, y }) => setPos({ x, y }))
+      .then((pos) => {
+        const isSameContainer =
+          domRange.endContainer === domRange.startContainer;
+        const calculateX = isSameContainer
+          ? pos.x
+          : domRange.startOffset * 5 + 110;
+
+        setPos({
+          x: calculateX,
+          y: pos.y,
+        });
+      })
       .catch(() => {
         setPos(undefined);
       });
@@ -64,12 +77,18 @@ const EditorTooltip = ({
   const positionStyle = useMemo<CSSProperties>(() => {
     return {
       position: "absolute",
-      top: pos ? pos.y + 4 : 0,
-      left: pos ? pos.x + 30 : 0,
+      top: pos ? pos.y : 0,
+      left: pos ? pos.x : 0,
       visibility: pos ? "visible" : "hidden",
       opacity: pos ? 1 : 0,
     };
   }, [pos]);
+
+  useEffect(() => {
+    setHasHydrate(true);
+  }, []);
+
+  if (!hasHydrate) return null;
 
   return createPortal(
     isOpen && (
