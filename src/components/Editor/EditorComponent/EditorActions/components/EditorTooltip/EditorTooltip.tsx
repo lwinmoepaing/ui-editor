@@ -10,6 +10,7 @@ import { $isRangeSelected } from "../../../../EditorUtils/isRangeSelected";
 import { TCustomEditorActionType } from "../../hook/useEditorAction";
 import { useEditorPointInteractions } from "../../hook/useEditorPointInteractions";
 import EditorToolbar from "../EditorToolbar/EditorToolbar";
+import useEditorHydrate from "../../../../EditorUtils/useEditorHydrate";
 
 interface IEditorTooltipProps {
   isLink: boolean;
@@ -25,11 +26,11 @@ const EditorTooltip = ({
   onClickAction,
 }: IEditorTooltipProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const hasHydrate = useEditorHydrate();
   const { isPointerDown, isKeyDown } = useEditorPointInteractions();
   const [editor] = useLexicalComposerContext();
   const [isOpen, setIsOpen] = useState<boolean>(isLink);
   const [pos, setPos] = useState<FloatingMenuPosition>(undefined);
-  const [hasHydrate, setHasHydrate] = useState<boolean>(false);
 
   useEffect(() => {
     editor.update(() => {
@@ -52,25 +53,6 @@ const EditorTooltip = ({
     }
 
     const domRange = nativeSel.getRangeAt(0);
-
-    // const rootElement = editor.getRootElement();
-    // let rect;
-    // if (nativeSel.anchorNode === rootElement) {
-    //   let inner = rootElement;
-    //   if (!inner) return;
-    //   while (inner.firstElementChild != null) {
-    //     inner = inner.firstElementChild as HTMLElement;
-    //   }
-    //   console.log("Top");
-    //   rect = inner.getBoundingClientRect();
-    // } else {
-    //   console.log("Bog");
-    //   rect = domRange.getBoundingClientRect();
-    // }
-
-    // console.log("domRangeAt0", domRange);
-    // console.log("nativeSel.rangeCount", nativeSel.rangeCount)
-    // console.log("domRange", nativeSel.getRangeAt(nativeSel.rangeCount - 1));
 
     computePosition(domRange, ref.current, {
       middleware: [flip(), shift(), offset(10)],
@@ -102,10 +84,6 @@ const EditorTooltip = ({
       opacity: pos ? 1 : 0,
     };
   }, [pos]);
-
-  useEffect(() => {
-    setHasHydrate(true);
-  }, []);
 
   if (!hasHydrate) return null;
 

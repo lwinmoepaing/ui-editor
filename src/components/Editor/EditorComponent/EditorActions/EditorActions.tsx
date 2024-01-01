@@ -5,13 +5,11 @@ const EditorActions = () => {
   const { onClickAction, checkActiveButton, isLink } = useEditorAction();
 
   return (
-    <>
-      <EditorTooltip
-        isLink={isLink}
-        onClickAction={onClickAction}
-        checkActiveButton={checkActiveButton}
-      />
-    </>
+    <EditorTooltip
+      isLink={isLink}
+      onClickAction={onClickAction}
+      checkActiveButton={checkActiveButton}
+    />
   );
 };
 export default EditorActions;
