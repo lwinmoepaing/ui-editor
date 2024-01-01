@@ -88,3 +88,29 @@ export const placeHolderStyle = stylex.create({
     fontSize: 20,
   },
 });
+
+export const editorSideActionStyle = stylex.create({
+  sideButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: {
+      default: 14,
+      ":hover": 20
+    },
+    borderColor: {
+      default: "#eee",
+      ":hover": "#eee",
+    },
+    borderStyle: "solid",
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    cursor: "pointer",
+    backgroundColor: "#eee",
+    transition: "0.2s transform ease-in-out",
+    transform: {
+      ":hover": "rotate(45deg)"
+    }
+  },
+});

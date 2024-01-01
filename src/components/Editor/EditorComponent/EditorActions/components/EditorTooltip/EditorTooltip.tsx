@@ -53,6 +53,25 @@ const EditorTooltip = ({
 
     const domRange = nativeSel.getRangeAt(0);
 
+    // const rootElement = editor.getRootElement();
+    // let rect;
+    // if (nativeSel.anchorNode === rootElement) {
+    //   let inner = rootElement;
+    //   if (!inner) return;
+    //   while (inner.firstElementChild != null) {
+    //     inner = inner.firstElementChild as HTMLElement;
+    //   }
+    //   console.log("Top");
+    //   rect = inner.getBoundingClientRect();
+    // } else {
+    //   console.log("Bog");
+    //   rect = domRange.getBoundingClientRect();
+    // }
+
+    // console.log("domRangeAt0", domRange);
+    // console.log("nativeSel.rangeCount", nativeSel.rangeCount)
+    // console.log("domRange", nativeSel.getRangeAt(nativeSel.rangeCount - 1));
+
     computePosition(domRange, ref.current, {
       middleware: [flip(), shift(), offset(10)],
       placement: "top",
