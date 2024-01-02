@@ -14,6 +14,7 @@ import { editorSideActionStyle as styles } from "../../EditorStyles/editor.style
 import useEditorHydrate from "../../EditorUtils/useEditorHydrate";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
+import { INSERT_BANNER_COMMAND } from "../../EditorPlugins/BannerPlugin/BannerPlugin";
 
 interface FloatingMenuCords {
   x: number;
@@ -180,6 +181,17 @@ const EditorSideActions = () => {
               variants={listItem}
             >
               <FiYoutube {...stylex.props(styles.actionButtonIcon)} />
+            </motion.button>
+            <motion.button
+              onClick={(e) => {
+                e.stopPropagation();
+                editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined);
+              }}
+              type="button"
+              {...stylex.props(styles.actionButton)}
+              variants={listItem}
+            >
+              BN
             </motion.button>
           </motion.div>
         ) : null}

@@ -15,9 +15,9 @@ import {
   createCommand,
 } from "lexical";
 
-type SerializedBannerNode = SerializedElementNode;
+type SerializedMeowPartyEmojiNode = SerializedElementNode;
 
-export class BannerNode extends ElementNode {
+export class MeowPartyEmojiNode extends ElementNode {
   constructor(key?: NodeKey) {
     super(key);
   }
@@ -26,8 +26,8 @@ export class BannerNode extends ElementNode {
     return "banner";
   }
 
-  static clone(node: BannerNode): BannerNode {
-    return new BannerNode(node.__key);
+  static clone(node: MeowPartyEmojiNode): MeowPartyEmojiNode {
+    return new MeowPartyEmojiNode(node.__key);
   }
 
   // Creating Dom Node for Our Banner Component
@@ -41,11 +41,11 @@ export class BannerNode extends ElementNode {
     return false;
   }
 
-  static importJSON(): BannerNode {
-    return $createBannerNode();
+  static importJSON(): MeowPartyEmojiNode {
+    return $createMeowPartyEmojiNode();
   }
 
-  exportJSON(): SerializedBannerNode {
+  exportJSON(): SerializedMeowPartyEmojiNode {
     return {
       ...super.exportJSON(),
       type: "banner",
@@ -73,21 +73,23 @@ export class BannerNode extends ElementNode {
   }
 }
 
-export const $createBannerNode = (): BannerNode => {
-  return new BannerNode();
+export const $createMeowPartyEmojiNode = (): MeowPartyEmojiNode => {
+  return new MeowPartyEmojiNode();
 };
 
-export const $isBannerNode = (node: LexicalNode): boolean => {
-  return node instanceof BannerNode;
+export const $isMeowPartyEmojiNode = (node: LexicalNode): boolean => {
+  return node instanceof MeowPartyEmojiNode;
 };
 
-export const INSERT_BANNER_COMMAND = createCommand("insertBanner");
+export const INSERT_BANNER_COMMAND = createCommand("insertMe");
 
-const BannerPlugin = (): null => {
+const MeowPartyEmojiPlugin = (): null => {
   const [editor] = useLexicalComposerContext();
 
-  if (!editor.hasNodes([BannerNode])) {
-    throw new Error("BannerPlugin: BannerNode is not registered on editor.");
+  if (!editor.hasNodes([MeowPartyEmojiNode])) {
+    throw new Error(
+      "MeowPartyEmojiPlugin: MeowPartyEmojiNode is not registered on editor."
+    );
   }
 
   editor.registerCommand(
@@ -96,7 +98,7 @@ const BannerPlugin = (): null => {
       const selection = $getSelection();
       const isRangeSelection = $isRangeSelection(selection);
       if (isRangeSelection) {
-        $setBlocksType(selection, $createBannerNode);
+        $setBlocksType(selection, $createMeowPartyEmojiNode);
       }
       return false;
     },
@@ -106,4 +108,4 @@ const BannerPlugin = (): null => {
   return null;
 };
 
-export default BannerPlugin;
+export default MeowPartyEmojiPlugin;

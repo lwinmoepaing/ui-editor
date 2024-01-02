@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 export function useEditorPointInteractions() {
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [isKeyDown, setIsKeyDown] = useState(false);
+  const [isDoubleClick, setIsDoubleClick] = useState(false);
 
   useEffect(() => {
     const handlePointerUp = () => {
       setIsPointerDown(false);
+      setIsDoubleClick(false);
       document.removeEventListener("pointerup", handlePointerUp);
     };
 
@@ -24,6 +26,7 @@ export function useEditorPointInteractions() {
   useEffect(() => {
     const handleKeyUp = () => {
       setIsKeyDown(false);
+      setIsDoubleClick(false);
       document.removeEventListener("keyup", handleKeyUp);
     };
 
@@ -38,5 +41,17 @@ export function useEditorPointInteractions() {
     };
   }, []);
 
-  return { isPointerDown, isKeyDown };
+  useEffect(() => {
+    const doubleClick = () => {
+      setIsDoubleClick(true);
+      setTimeout(() => setIsDoubleClick(false), 10);
+    };
+
+    document.addEventListener("dblclick", doubleClick);
+    return () => {
+      document.removeEventListener("dblclick", doubleClick);
+    };
+  }, []);
+
+  return { isPointerDown, isKeyDown, isDoubleClick };
 }

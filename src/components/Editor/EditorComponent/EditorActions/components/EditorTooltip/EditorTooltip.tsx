@@ -27,7 +27,8 @@ const EditorTooltip = ({
 }: IEditorTooltipProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const hasHydrate = useEditorHydrate();
-  const { isPointerDown, isKeyDown } = useEditorPointInteractions();
+  const { isPointerDown, isKeyDown, isDoubleClick } =
+    useEditorPointInteractions();
   const [editor] = useLexicalComposerContext();
   const [isOpen, setIsOpen] = useState<boolean>(isLink);
   const [pos, setPos] = useState<FloatingMenuPosition>(undefined);
@@ -42,7 +43,7 @@ const EditorTooltip = ({
       const setOpen = $isRangeSelected(selection);
       setIsOpen(setOpen);
     });
-  }, [editor, isKeyDown, isLink, isOpen, isPointerDown]);
+  }, [editor, isKeyDown, isLink, isOpen, isPointerDown, isDoubleClick]);
 
   useEffect(() => {
     const nativeSel = window.getSelection();

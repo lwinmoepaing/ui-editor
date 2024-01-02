@@ -13,6 +13,8 @@ import {
 } from "react-icons/fi";
 import { FaListOl, FaHighlighter } from "react-icons/fa";
 import { motion, Variants } from "framer-motion";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { INSERT_BANNER_COMMAND } from "../../../../EditorPlugins/BannerPlugin/BannerPlugin";
 
 const opacityAnimation: Variants = {
   initial: {
@@ -35,10 +37,9 @@ const EditorToolbar = ({
   checkActiveButton: (str: TCustomEditorActionType) => boolean;
   onClickAction: (str: TCustomEditorActionType) => void;
 }) => {
+  const [editor] = useLexicalComposerContext();
   return (
-    <motion.div
-      {...stylex.props(style.container)}
-    >
+    <motion.div {...stylex.props(style.container)}>
       <motion.span
         initial="initial"
         animate="visible"
@@ -182,6 +183,17 @@ const EditorToolbar = ({
         onClick={() => onClickAction("right")}
       >
         <FiAlignRight />
+      </motion.span>
+      <motion.span
+        initial="initial"
+        animate="visible"
+        variants={opacityAnimation}
+        {...stylex.props(style.actionButton)}
+        onClick={() => {
+          editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined);
+        }}
+      >
+        Banner
       </motion.span>
     </motion.div>
   );

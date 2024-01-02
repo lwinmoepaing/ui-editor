@@ -83,7 +83,7 @@ export const editorTooltipStyles = stylex.create({
 export const placeHolderStyle = stylex.create({
   container: {
     position: "relative",
-    top: -23,
+    top: -29,
     color: "#777",
     fontSize: 20,
   },
@@ -120,7 +120,6 @@ export const editorSideActionStyle = stylex.create({
 
   activedRightContainer: {
     padding: "6px 8px",
-    backgroundColor: "white",
     position: "absolute",
     borderRadius: 12,
     top: -6,
@@ -148,7 +147,7 @@ export const editorSideActionStyle = stylex.create({
     backgroundColor: "white",
     color: "#6195ff",
   },
-  
+
   actionButtonIcon: {
     fontSize: 20,
   },

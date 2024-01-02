@@ -68,12 +68,12 @@ export const lexicalEditorTheme: EditorThemeClasses = {
     url: "editor-tokenOperator",
     variable: "editor-tokenVariable",
   },
+  // Custom properties
+  banner: "editor-banner",
 };
 
 const theme: EditorThemeClasses = {
-  ...lexicalEditorTheme
+  ...lexicalEditorTheme,
 };
 
 export default theme;
-
-

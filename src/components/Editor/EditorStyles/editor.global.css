@@ -4,6 +4,7 @@
 
 .editor-paragraph {
   margin: 0;
+  margin-bottom: 6px;
 }
 
 .editor-text-bold {
@@ -29,4 +30,12 @@
 
 .editor-paragraph {
   font-size: 20px;
+}
+
+.editor-banner {
+  background-color: #f9d0ff;
+  border-left: 4px solid purple;
+  padding: 6px 10px;
+  font-size: 20px;
+  margin: 0;
 }

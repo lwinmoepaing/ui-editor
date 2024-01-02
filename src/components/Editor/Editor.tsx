@@ -21,6 +21,7 @@ import EditorPlaceHolder from "./EditorComponent/EditorPlaceHolder/EditorPlaceHo
 import EditorSideActions from "./EditorComponent/EditorSideActions/EditorSideActions";
 import CustomFocusPlugin from "./EditorPlugins/CustomFocusPlugin/CustomFocusPlugin";
 import OnChangePlugin from "./EditorPlugins/OnChangePlugin/OnChangePlugin";
+import BannerPlugin from "./EditorPlugins/BannerPlugin/BannerPlugin";
 interface IOnChangeProps {
   plainText: string;
   editorText: string;
@@ -36,6 +37,15 @@ export default function Editor({ placeHolder, onChange }: IEditorProps) {
     <div {...stylex.props(editorStyles.container)}>
       <div className="richtext-editor">
         <LexicalComposer initialConfig={editorConfig}>
+          {/* Start: Custom Components And Plugins */}
+          <>
+            <BannerPlugin />
+            <EditorActions />
+            <EditorSideActions />
+            <CustomFocusPlugin />
+            <OnChangePlugin onChange={onChange} />
+          </>
+
           {/* Start: From Lexical */}
           <RichTextPlugin
             contentEditable={<ContentEditable autoFocus={true} />}
@@ -45,14 +55,6 @@ export default function Editor({ placeHolder, onChange }: IEditorProps) {
           <ListPlugin />
           <LinkPlugin />
           <HistoryPlugin />
-
-          {/* Start: Custom Components And Plugins */}
-          <>
-            <EditorActions />
-            <EditorSideActions />
-            <CustomFocusPlugin />
-            <OnChangePlugin onChange={onChange} />
-          </>
         </LexicalComposer>
       </div>
     </div>
