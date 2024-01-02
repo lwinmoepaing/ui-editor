@@ -2,6 +2,7 @@ import { computePosition, offset, shift } from "@floating-ui/dom";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
 import { stylex } from "@stylexjs/stylex";
+import { motion } from "framer-motion";
 import {
   $getRoot,
   $getSelection,
@@ -9,12 +10,11 @@ import {
   SELECTION_CHANGE_COMMAND,
 } from "lexical";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FiPlus, FiImage, FiCode, FiYoutube } from "react-icons/fi";
+import { createPortal } from "react-dom";
+import { FiCode, FiImage, FiPlus, FiYoutube } from "react-icons/fi";
+import { INSERT_MEOWEMOJI_COMMAND } from "../../EditorPlugins/MeowPartyEmojiPlugin/MeowPartyEmojiPlugin";
 import { editorSideActionStyle as styles } from "../../EditorStyles/editor.styles";
 import useEditorHydrate from "../../EditorUtils/useEditorHydrate";
-import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
-import { INSERT_BANNER_COMMAND } from "../../EditorPlugins/BannerPlugin/BannerPlugin";
 
 interface FloatingMenuCords {
   x: number;
@@ -185,13 +185,16 @@ const EditorSideActions = () => {
             <motion.button
               onClick={(e) => {
                 e.stopPropagation();
-                editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined);
+                editor.dispatchCommand(INSERT_MEOWEMOJI_COMMAND, undefined);
               }}
               type="button"
               {...stylex.props(styles.actionButton)}
               variants={listItem}
             >
-              BN
+              <img
+                src="/meow_party.gif"
+                {...stylex.props(styles.actionButtonImg)}
+              />
             </motion.button>
           </motion.div>
         ) : null}

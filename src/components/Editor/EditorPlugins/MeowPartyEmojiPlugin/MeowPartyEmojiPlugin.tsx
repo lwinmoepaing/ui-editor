@@ -1,10 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $setBlocksType } from "@lexical/selection";
 import {
   $createParagraphNode,
-  $getSelection,
-  $isRangeSelection,
+  $insertNodes,
   COMMAND_PRIORITY_LOW,
   EditorConfig,
   ElementNode,
@@ -17,24 +15,29 @@ import {
 
 type SerializedMeowPartyEmojiNode = SerializedElementNode;
 
+const PLUGIN_TYPE = "meowPartyEmoji";
+
 export class MeowPartyEmojiNode extends ElementNode {
   constructor(key?: NodeKey) {
     super(key);
   }
 
   static getType(): string {
-    return "banner";
+    return PLUGIN_TYPE;
   }
 
   static clone(node: MeowPartyEmojiNode): MeowPartyEmojiNode {
     return new MeowPartyEmojiNode(node.__key);
   }
 
-  // Creating Dom Node for Our Banner Component
+  // Creating Dom Node for Our Meow Component
   createDOM(config: EditorConfig): HTMLElement {
-    const ele = document.createElement("p");
-    ele.className = config.theme.banner;
-    return ele;
+    const span = document.createElement("span");
+    const image = document.createElement("img");
+    span.className = config.theme.meowEmoji;
+    image.src = "/meow_party.gif";
+    span.appendChild(image);
+    return span;
   }
 
   updateDOM(): boolean {
@@ -48,7 +51,7 @@ export class MeowPartyEmojiNode extends ElementNode {
   exportJSON(): SerializedMeowPartyEmojiNode {
     return {
       ...super.exportJSON(),
-      type: "banner",
+      type: PLUGIN_TYPE,
       version: 1,
     };
   }
@@ -81,7 +84,7 @@ export const $isMeowPartyEmojiNode = (node: LexicalNode): boolean => {
   return node instanceof MeowPartyEmojiNode;
 };
 
-export const INSERT_BANNER_COMMAND = createCommand("insertMe");
+export const INSERT_MEOWEMOJI_COMMAND = createCommand(`insert_${PLUGIN_TYPE}`);
 
 const MeowPartyEmojiPlugin = (): null => {
   const [editor] = useLexicalComposerContext();
@@ -93,13 +96,10 @@ const MeowPartyEmojiPlugin = (): null => {
   }
 
   editor.registerCommand(
-    INSERT_BANNER_COMMAND,
+    INSERT_MEOWEMOJI_COMMAND,
     () => {
-      const selection = $getSelection();
-      const isRangeSelection = $isRangeSelection(selection);
-      if (isRangeSelection) {
-        $setBlocksType(selection, $createMeowPartyEmojiNode);
-      }
+      const imageNode = $createMeowPartyEmojiNode();
+      $insertNodes([imageNode]);
       return false;
     },
     COMMAND_PRIORITY_LOW

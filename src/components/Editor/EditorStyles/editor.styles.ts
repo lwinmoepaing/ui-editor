@@ -151,4 +151,9 @@ export const editorSideActionStyle = stylex.create({
   actionButtonIcon: {
     fontSize: 20,
   },
+
+  actionButtonImg: {
+    width: 20,
+    height: 20,
+  }
 });

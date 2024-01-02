@@ -5,8 +5,10 @@ import { InitialConfigType } from "@lexical/react/LexicalComposer";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import editorTheme from "../EditorStyles/editor.theme";
-// import { ImageNode } from "../components/CustomNodes/ImageNode";
+
+// Custom Nodes
 import { BannerNode } from "../EditorPlugins/BannerPlugin/BannerPlugin";
+import { MeowPartyEmojiNode } from "../EditorPlugins/MeowPartyEmojiPlugin/MeowPartyEmojiPlugin";
 
 const editorConfig: InitialConfigType = {
   theme: editorTheme,
@@ -27,6 +29,7 @@ const editorConfig: InitialConfigType = {
     // -- My CustomNodes
     // ImageNode,
     BannerNode,
+    MeowPartyEmojiNode,
   ],
   onError: (error: Error) => {
     console.error(error);

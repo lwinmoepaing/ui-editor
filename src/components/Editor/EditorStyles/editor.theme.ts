@@ -70,6 +70,7 @@ export const lexicalEditorTheme: EditorThemeClasses = {
   },
   // Custom properties
   banner: "editor-banner",
+  meowEmoji: "editor-meow-emoji"
 };
 
 const theme: EditorThemeClasses = {

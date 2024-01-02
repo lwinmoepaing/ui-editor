@@ -19,9 +19,10 @@ import { editorStyles } from "./EditorStyles/editor.styles";
 import EditorActions from "./EditorComponent/EditorActions/EditorActions";
 import EditorPlaceHolder from "./EditorComponent/EditorPlaceHolder/EditorPlaceHolder";
 import EditorSideActions from "./EditorComponent/EditorSideActions/EditorSideActions";
-import CustomFocusPlugin from "./EditorPlugins/CustomFocusPlugin/CustomFocusPlugin";
-import OnChangePlugin from "./EditorPlugins/OnChangePlugin/OnChangePlugin";
 import BannerPlugin from "./EditorPlugins/BannerPlugin/BannerPlugin";
+import CustomFocusPlugin from "./EditorPlugins/CustomFocusPlugin/CustomFocusPlugin";
+import MeowPartyEmojiPlugin from "./EditorPlugins/MeowPartyEmojiPlugin/MeowPartyEmojiPlugin";
+import OnChangePlugin from "./EditorPlugins/OnChangePlugin/OnChangePlugin";
 interface IOnChangeProps {
   plainText: string;
   editorText: string;
@@ -40,6 +41,7 @@ export default function Editor({ placeHolder, onChange }: IEditorProps) {
           {/* Start: Custom Components And Plugins */}
           <>
             <BannerPlugin />
+            <MeowPartyEmojiPlugin />
             <EditorActions />
             <EditorSideActions />
             <CustomFocusPlugin />
