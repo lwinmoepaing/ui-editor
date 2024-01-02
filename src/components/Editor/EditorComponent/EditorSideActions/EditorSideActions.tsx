@@ -12,7 +12,6 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FiCode, FiImage, FiPlus, FiYoutube } from "react-icons/fi";
-import { INSERT_MEOWEMOJI_COMMAND } from "../../EditorPlugins/MeowPartyEmojiPlugin/MeowPartyEmojiPlugin";
 import { editorSideActionStyle as styles } from "../../EditorStyles/editor.styles";
 import useEditorHydrate from "../../EditorUtils/useEditorHydrate";
 
@@ -181,20 +180,6 @@ const EditorSideActions = () => {
               variants={listItem}
             >
               <FiYoutube {...stylex.props(styles.actionButtonIcon)} />
-            </motion.button>
-            <motion.button
-              onClick={(e) => {
-                e.stopPropagation();
-                editor.dispatchCommand(INSERT_MEOWEMOJI_COMMAND, undefined);
-              }}
-              type="button"
-              {...stylex.props(styles.actionButton)}
-              variants={listItem}
-            >
-              <img
-                src="/meow_party.gif"
-                {...stylex.props(styles.actionButtonImg)}
-              />
             </motion.button>
           </motion.div>
         ) : null}
