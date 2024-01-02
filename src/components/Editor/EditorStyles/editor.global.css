@@ -40,6 +40,13 @@
   margin-right: auto;
 }
 
+.editor-list-ul,
+.editor-list-ol {
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .editor-banner {
   background-color: #f9d0ff;
   border-left: 4px solid purple;
