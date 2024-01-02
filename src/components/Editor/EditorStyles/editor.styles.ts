@@ -78,12 +78,48 @@ export const editorTooltipStyles = stylex.create({
       ":hover": "#eee",
     },
   },
+
+  bottomTooltip: {
+    position: "absolute",
+    opacity: 0,
+    visibility: "hidden",
+  },
+
+  bottomTooltipActive: {
+    position: "absolute",
+    opacity: 1,
+    visibility: "visible",
+
+    minWidth: 200,
+  },
+
+  linkInputWrapper: {
+    display: "block",
+    position: "relative",
+    width: "100%",
+  },
+
+  linkInput: {
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderRadius: 10,
+    borderColor: {
+      default: "#dfdfdf",
+      ":hover": "#eee",
+    },
+    padding: 10,
+    display: "block",
+    position: "relative",
+    width: "100%",
+    outline: "none",
+  },
 });
 
 export const placeHolderStyle = stylex.create({
   container: {
-    position: "relative",
-    top: -29,
+    position: "absolute",
+    top: 0,
     color: "#777",
     fontSize: 20,
   },
@@ -124,7 +160,6 @@ export const editorSideActionStyle = stylex.create({
     borderRadius: 12,
     top: -6,
     left: 40,
-    minWidth: 220,
     display: "flex",
     alignItems: "center",
     gap: 12,
@@ -155,5 +190,5 @@ export const editorSideActionStyle = stylex.create({
   actionButtonImg: {
     width: 20,
     height: 20,
-  }
+  },
 });

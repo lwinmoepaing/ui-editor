@@ -36,19 +36,9 @@ interface IEditorProps {
 export default function Editor({ placeHolder, onChange }: IEditorProps) {
   return (
     <div {...stylex.props(editorStyles.container)}>
-      <div className="richtext-editor">
-        <LexicalComposer initialConfig={editorConfig}>
-          {/* Start: Custom Components And Plugins */}
-          <>
-            <BannerPlugin />
-            <MeowPartyEmojiPlugin />
-            <EditorActions />
-            <EditorSideActions />
-            <CustomFocusPlugin />
-            <OnChangePlugin onChange={onChange} />
-          </>
-
-          {/* Start: From Lexical */}
+      <LexicalComposer initialConfig={editorConfig}>
+        {/* Start: From Lexical */}
+        <div className="richtext-editor">
           <RichTextPlugin
             contentEditable={<ContentEditable autoFocus={true} />}
             placeholder={<EditorPlaceHolder>{placeHolder}</EditorPlaceHolder>}
@@ -57,8 +47,18 @@ export default function Editor({ placeHolder, onChange }: IEditorProps) {
           <ListPlugin />
           <LinkPlugin />
           <HistoryPlugin />
-        </LexicalComposer>
-      </div>
+        </div>
+
+        {/* Start: Custom Components And Plugins */}
+        <>
+          <BannerPlugin />
+          <MeowPartyEmojiPlugin />
+          <EditorActions />
+          <EditorSideActions />
+          <CustomFocusPlugin />
+          <OnChangePlugin onChange={onChange} />
+        </>
+      </LexicalComposer>
     </div>
   );
 }

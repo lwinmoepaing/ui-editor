@@ -1,20 +1,9 @@
 import { stylex } from "@stylexjs/stylex";
+import { Variants, motion } from "framer-motion";
+import { FiBold, FiItalic, FiLink, FiList, FiUnderline } from "react-icons/fi";
+import { LuHeading1, LuHeading2, LuListOrdered, LuHighlighter } from "react-icons/lu";
 import { editorToolbarStyles as style } from "../../../../EditorStyles/editor.styles";
 import { TCustomEditorActionType } from "../../hook/useEditorAction";
-import {
-  FiBold,
-  FiItalic,
-  FiUnderline,
-  FiList,
-  FiAlignLeft,
-  FiAlignRight,
-  FiAlignCenter,
-  FiLink,
-} from "react-icons/fi";
-import { FaListOl, FaHighlighter } from "react-icons/fa";
-import { motion, Variants } from "framer-motion";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { INSERT_BANNER_COMMAND } from "../../../../EditorPlugins/BannerPlugin/BannerPlugin";
 
 const opacityAnimation: Variants = {
   initial: {
@@ -37,7 +26,6 @@ const EditorToolbar = ({
   checkActiveButton: (str: TCustomEditorActionType) => boolean;
   onClickAction: (str: TCustomEditorActionType) => void;
 }) => {
-  const [editor] = useLexicalComposerContext();
   return (
     <motion.div {...stylex.props(style.container)}>
       <motion.span
@@ -50,7 +38,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("h1")}
       >
-        H1
+        <LuHeading1 />
       </motion.span>
       <motion.span
         initial="initial"
@@ -62,7 +50,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("h2")}
       >
-        H2
+        <LuHeading2 />
       </motion.span>
       <motion.span
         initial="initial"
@@ -110,7 +98,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("ol")}
       >
-        <FaListOl />
+        <LuListOrdered />
       </motion.span>
       <motion.span
         initial="initial"
@@ -134,7 +122,7 @@ const EditorToolbar = ({
         )}
         onClick={() => onClickAction("highlight")}
       >
-        <FaHighlighter />
+        <LuHighlighter />
       </motion.span>
       <motion.span
         initial="initial"
@@ -147,53 +135,6 @@ const EditorToolbar = ({
         onClick={() => onClickAction("link")}
       >
         <FiLink />
-      </motion.span>
-      <motion.span
-        initial="initial"
-        animate="visible"
-        variants={opacityAnimation}
-        {...stylex.props(
-          style.actionButton,
-          checkActiveButton("left") && style.activeButton
-        )}
-        onClick={() => onClickAction("left")}
-      >
-        <FiAlignLeft />
-      </motion.span>
-      <motion.span
-        initial="initial"
-        animate="visible"
-        variants={opacityAnimation}
-        {...stylex.props(
-          style.actionButton,
-          checkActiveButton("center") && style.activeButton
-        )}
-        onClick={() => onClickAction("center")}
-      >
-        <FiAlignCenter />
-      </motion.span>
-      <motion.span
-        initial="initial"
-        animate="visible"
-        variants={opacityAnimation}
-        {...stylex.props(
-          style.actionButton,
-          checkActiveButton("right") && style.activeButton
-        )}
-        onClick={() => onClickAction("right")}
-      >
-        <FiAlignRight />
-      </motion.span>
-      <motion.span
-        initial="initial"
-        animate="visible"
-        variants={opacityAnimation}
-        {...stylex.props(style.actionButton)}
-        onClick={() => {
-          editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined);
-        }}
-      >
-        Banner
       </motion.span>
     </motion.div>
   );

@@ -1,3 +1,7 @@
+.richtext-editor {
+  position: relative;
+}
+
 .richtext-editor > div {
   outline: none;
 }
