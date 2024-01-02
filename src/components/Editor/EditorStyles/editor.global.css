@@ -51,3 +51,9 @@
   position: relative;
   top: 1px;
 }
+
+.editor-link {
+  color: black;
+  text-decoration: underline;
+}
+
