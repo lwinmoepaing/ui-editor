@@ -4,11 +4,16 @@
 
 .richtext-editor > div {
   outline: none;
+  /* background: red; */
 }
 
 .editor-paragraph {
   margin: 0;
   margin-bottom: 6px;
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
 }
 
 .editor-text-bold {
@@ -30,10 +35,9 @@
 .editor-heading-h5 {
   margin: 0;
   margin-bottom: 12px;
-}
-
-.editor-paragraph {
-  font-size: 20px;
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .editor-banner {
@@ -42,18 +46,21 @@
   padding: 6px 10px;
   font-size: 20px;
   margin: 0;
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
 }
 
 .editor-meow-emoji {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   position: relative;
-  top: 1px;
+  top: 4px;
 }
 
 .editor-link {
   color: black;
   text-decoration: underline;
 }
-

@@ -117,11 +117,16 @@ export const editorTooltipStyles = stylex.create({
 });
 
 export const placeHolderStyle = stylex.create({
-  container: {
+  container: { width: 660, margin: "0 auto" },
+  placeHolder: {
     position: "absolute",
     top: 0,
     color: "#777",
     fontSize: 20,
+    width: "100%",
+    maxWidth: 660,
+    marginHorizontal: "auto",
+    margin: 0,
   },
 });
 

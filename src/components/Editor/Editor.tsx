@@ -41,7 +41,10 @@ export default function Editor({ placeHolder, onChange }: IEditorProps) {
         <div className="richtext-editor">
           <RichTextPlugin
             contentEditable={<ContentEditable autoFocus={true} />}
-            placeholder={<EditorPlaceHolder>{placeHolder}</EditorPlaceHolder>}
+            placeholder={
+                <EditorPlaceHolder>{placeHolder}</EditorPlaceHolder>
+
+            }
             ErrorBoundary={LexicalErrorBoundary}
           />
           <ListPlugin />

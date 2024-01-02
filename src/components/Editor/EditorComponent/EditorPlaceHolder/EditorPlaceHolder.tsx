@@ -7,9 +7,11 @@ const EditorPlaceHolder: React.FC<PropsWithChildren> = ({ children }) => {
   const [editor] = useLexicalComposerContext();
 
   return (
-    <span {...stylex.props(style.container)} onClick={() => editor.focus()}>
-      {children ? children : "Place Holder"}
-    </span>
+    <div {...stylex.props(style.container)}>
+      <p {...stylex.props(style.placeHolder)} onClick={() => editor.focus()}>
+        {children ? children : "Place Holder"}
+      </p>
+    </div>
   );
 };
 export default EditorPlaceHolder;

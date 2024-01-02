@@ -11,6 +11,7 @@ import {
   createCommand,
 } from "lexical";
 import { useEffect } from "react";
+import emojis from "./MeowEmojis";
 
 export type SerializedMeowPartyEmojiNode = Spread<
   {
@@ -47,12 +48,13 @@ export class MeowPartyEmojiNode extends TextNode {
 
   // Creating Dom Node for Our Meow Component
   createDOM(config: EditorConfig): HTMLElement {
-    if (this.__className === "emoji cat") {
+    if (this.__className.includes("emoji-gif")) {
       const inner = super.createDOM(config);
       inner.className = "emoji-inner";
 
+      const [, gif] = this.__className.split(":");
       const emoji = document.createElement("img");
-      emoji.src = "/meow_party.gif";
+      emoji.src = gif ? gif : "/meow_party.gif";
       emoji.className = config.theme.meowEmoji;
 
       const dom = document.createElement("span");
@@ -118,18 +120,6 @@ export const $isMeowPartyEmojiNode = (node: LexicalNode): boolean => {
 };
 
 export const INSERT_MEOWEMOJI_COMMAND = createCommand(`insert_${PLUGIN_TYPE}`);
-
-const emojis: Map<string, [string, string]> = new Map([
-  [":)", ["emoji happysmile", "🙂"]],
-  [":D", ["emoji veryhappysmile", "😀"]],
-  [":(", ["emoji unhappysmile", "🙁"]],
-  ["<3", ["emoji heart", "❤"]],
-  ["🙂", ["emoji happysmile", "🙂"]],
-  ["😀", ["emoji veryhappysmile", "😀"]],
-  ["🙁", ["emoji unhappysmile", "🙁"]],
-  ["❤", ["emoji heart", "❤"]],
-  [":3", ["emoji cat", " "]],
-]);
 
 function findAndTransformEmoji(node: TextNode): null | TextNode {
   const text = node.getTextContent();
