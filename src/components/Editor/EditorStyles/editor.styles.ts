@@ -94,23 +94,62 @@ export const editorSideActionStyle = stylex.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: {
-      default: 14,
-      ":hover": 20
-    },
     borderColor: {
       default: "#eee",
       ":hover": "#eee",
     },
     borderStyle: "solid",
-    borderRadius: 15,
-    width: 30,
-    height: 30,
+    borderRadius: 18,
+    width: 36,
+    height: 36,
     cursor: "pointer",
     backgroundColor: "#eee",
-    transition: "0.2s transform ease-in-out",
+    transition: "0.2s all ease-in-out",
+    opacity: {
+      default: 0.7,
+      ":hover": 1,
+    },
+  },
+
+  activedSideButton: {
     transform: {
-      ":hover": "rotate(45deg)"
-    }
+      default: "rotate(135deg)",
+      ":hover": "rotate(135deg)",
+    },
+  },
+
+  activedRightContainer: {
+    padding: "6px 8px",
+    backgroundColor: "white",
+    position: "absolute",
+    borderRadius: 12,
+    top: -6,
+    left: 40,
+    minWidth: 220,
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+  },
+
+  actionButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: {
+      default: "#6195ff",
+      ":hover": "#6195ff",
+    },
+    borderWidth: 0.5,
+    borderStyle: "solid",
+    borderRadius: 18,
+    width: 36,
+    height: 36,
+    cursor: "pointer",
+    backgroundColor: "white",
+    color: "#6195ff",
+  },
+  
+  actionButtonIcon: {
+    fontSize: 20,
   },
 });

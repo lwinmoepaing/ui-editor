@@ -9,15 +9,31 @@ import {
   SELECTION_CHANGE_COMMAND,
 } from "lexical";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FiPlus } from "react-icons/fi";
-import { editorSideActionStyle } from "../../EditorStyles/editor.styles";
+import { FiPlus, FiImage, FiCode, FiYoutube } from "react-icons/fi";
+import { editorSideActionStyle as styles } from "../../EditorStyles/editor.styles";
 import useEditorHydrate from "../../EditorUtils/useEditorHydrate";
 import { createPortal } from "react-dom";
+import { motion } from "framer-motion";
 
 interface FloatingMenuCords {
   x: number;
   y: number;
 }
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const listItem = {
+  hidden: { opacity: 0.4, scale: 0.3 },
+  show: { opacity: 1, scale: 1 },
+};
 
 const EditorSideActions = () => {
   const hasHydrate = useEditorHydrate();
@@ -27,11 +43,10 @@ const EditorSideActions = () => {
     FloatingMenuCords | undefined
   >(undefined);
 
-  // const [isShowFloatingComponentMenu, setIsShowRightContent] =
-  //   useState<boolean>(false);
+  const [showRightSideIcons, setShowRightSideIcons] = useState<boolean>(false);
 
   const handleToggleFloatingComponentMenu = useCallback(() => {
-    // setIsShowRightContent((prev) => !prev);
+    setShowRightSideIcons((prev) => !prev);
   }, []);
 
   const handleLeftSideIcon = useCallback(() => {
@@ -83,7 +98,7 @@ const EditorSideActions = () => {
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
         () => {
-          // setIsShowRightContent(false);
+          setShowRightSideIcons(false);
           handleLeftSideIcon();
           return false;
         },
@@ -92,14 +107,14 @@ const EditorSideActions = () => {
       editor.registerCommand(
         KEY_ENTER_COMMAND,
         () => {
-          // setIsShowRightContent(false);
+          setShowRightSideIcons(false);
           handleLeftSideIcon();
           return false;
         },
         1
       )
     );
-  }, [editor, handleLeftSideIcon]);
+  }, [editor, handleLeftSideIcon, setShowRightSideIcons]);
 
   if (!hasHydrate) return null;
 
@@ -121,11 +136,53 @@ const EditorSideActions = () => {
             handleToggleFloatingComponentMenu();
           }}
           type="button"
-          {...stylex.props(editorSideActionStyle.sideButton)}
+          {...stylex.props(
+            styles.sideButton,
+            showRightSideIcons && styles.activedSideButton
+          )}
         >
           <FiPlus />
         </button>
 
+        {showRightSideIcons ? (
+          <motion.div
+            {...stylex.props(styles.activedRightContainer)}
+            variants={container}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              type="button"
+              {...stylex.props(styles.actionButton)}
+              variants={listItem}
+            >
+              <FiImage {...stylex.props(styles.actionButtonIcon)} />
+            </motion.button>
+            <motion.button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              type="button"
+              {...stylex.props(styles.actionButton)}
+              variants={listItem}
+            >
+              <FiCode {...stylex.props(styles.actionButtonIcon)} />
+            </motion.button>
+            <motion.button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              type="button"
+              {...stylex.props(styles.actionButton)}
+              variants={listItem}
+            >
+              <FiYoutube {...stylex.props(styles.actionButtonIcon)} />
+            </motion.button>
+          </motion.div>
+        ) : null}
       </div>
     ),
     document.body

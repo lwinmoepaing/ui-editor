@@ -4,24 +4,23 @@ import * as stylex from "@stylexjs/stylex";
 
 // Lexical Editor Plugin
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 
 // Lexical Error Boundaries
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
+// Editor Styles
+import editorConfig from "./EditorConfig/editor.config";
+import { editorStyles } from "./EditorStyles/editor.styles";
+
 // Custom Plugin and Components
+import EditorActions from "./EditorComponent/EditorActions/EditorActions";
 import EditorPlaceHolder from "./EditorComponent/EditorPlaceHolder/EditorPlaceHolder";
+import EditorSideActions from "./EditorComponent/EditorSideActions/EditorSideActions";
 import CustomFocusPlugin from "./EditorPlugins/CustomFocusPlugin/CustomFocusPlugin";
 import OnChangePlugin from "./EditorPlugins/OnChangePlugin/OnChangePlugin";
-import EditorActions from "./EditorComponent/EditorActions/EditorActions";
-
-// Editor Styles
-import { editorStyles } from "./EditorStyles/editor.styles";
-import editorConfig from "./EditorConfig/editor.config";
-import EditorSideActions from "./EditorComponent/EditorSideActions/EditorSideActions";
-
 interface IOnChangeProps {
   plainText: string;
   editorText: string;
