@@ -163,6 +163,11 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     };
   }
 
+  decorate(editor: LexicalEditor, config: EditorConfig): JSX.Element {
+    console.log(editor, config);
+    return <></>;
+  }
+
   // insertNewAfter(
   //   _selection: RangeSelection,
   //   restoreSelection?: boolean | undefined
