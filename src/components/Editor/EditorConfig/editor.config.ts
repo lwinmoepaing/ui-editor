@@ -9,6 +9,7 @@ import editorTheme from "../EditorStyles/editor.theme";
 // Custom Nodes
 import { BannerNode } from "../EditorPlugins/BannerPlugin/BannerPlugin";
 import { MeowPartyEmojiNode } from "../EditorPlugins/MeowPartyEmojiPlugin/MeowPartyEmojiPlugin";
+import { ImageNode } from "../EditorPlugins/ImagePlugin/ImageNode";
 
 const editorConfig: InitialConfigType = {
   theme: editorTheme,
@@ -27,7 +28,7 @@ const editorConfig: InitialConfigType = {
     LinkNode,
 
     // -- My CustomNodes
-    // ImageNode,
+    ImageNode,
     BannerNode,
     MeowPartyEmojiNode,
   ],
